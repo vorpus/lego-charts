@@ -44,7 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var _api = __webpack_require__(1);
 
@@ -54,10 +54,80 @@
 
 	document.addEventListener('DOMContentLoaded', function () {
 	  API.getThemes();
+
+	  $('.theme-ul').on('click', 'li', function (e) {
+	    var desc = $(e.target).data().desc;
+	    var id = $(e.target).data().id;
+	    API.getSets(desc, id);
+	  });
+
+	  $('.set-ul').on('mouseover', 'li', function (e) {
+	    var thumb = $(e.target).data().thumb;
+	    setInfo($(e.target).data());
+	  });
 	});
+
+	function setInfo(data) {
+	  $('.set-image').css('background-image', 'url(' + data.thumb + ')');
+	}
 
 /***/ },
 /* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getSets = exports.getThemes = undefined;
+
+	var _data = __webpack_require__(2);
+
+	var Data = _interopRequireWildcard(_data);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	var getThemes = exports.getThemes = function getThemes() {
+	  $.ajax({
+	    url: 'https://rebrickable.com/api/get_themes',
+	    data: {
+	      key: KEY,
+	      format: 'json'
+	    },
+	    success: function success(_success) {
+	      Data.processData('themes', _success);
+	    },
+	    error: function error() {
+	      console.log('fail');
+	    }
+	  });
+	};
+
+	var getSets = exports.getSets = function getSets(theme, theme_id) {
+
+	  $.ajax({
+	    url: 'https://rebrickable.com/api/search',
+	    data: {
+	      key: KEY,
+	      query: theme,
+	      format: 'json',
+	      type: 'S'
+
+	    },
+	    success: function success(_success2) {
+	      Data.processData('sets', _success2);
+	    },
+	    error: function error() {
+	      console.log('fail');
+	    }
+	  });
+	};
+
+	var KEY = 'Xdo02dxumY';
+
+/***/ },
+/* 2 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65,32 +135,40 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var getThemes = exports.getThemes = function getThemes() {
-	  $.ajax({
-	    url: 'http://brickset.com/api/v2.asmx/getThemes',
-	    data: {
-	      apiKey: 'eZLk-YNeq-WVG0',
-	      userHash: '',
-	      query: '',
-	      theme: '',
-	      subtheme: '',
-	      setNumber: '',
-	      year: '',
-	      owned: '',
-	      wanted: '',
-	      orderBy: '',
-	      pageSize: '',
-	      pageNumber: 1,
-	      userName: ''
-	    }
-	  }, function (success) {
-	    console.log('success'), function (error) {
-	      console.log('fail');
-	    };
-	  });
+	var processData = exports.processData = function processData(type, data) {
+	  switch (type) {
+	    case 'themes':
+	      addThemes(data.themes);
+	      break;
+	    case 'sets':
+	      addSets(data.results);
+	      break;
+	    default:
+	      console.log('none selected');
+	  }
 	};
 
-	var getSets = exports.getSets = function getSets() {};
+	function addThemes(themes) {
+	  themes.forEach(function (theme) {
+	    var themeLevel = void 0;
+	    if (theme.theme_id.split('.').length === 3) {
+	      themeLevel = 'theme-3';
+	    } else if (theme.theme_id.split('.').length === 2) {
+	      themeLevel = 'theme-2';
+	    } else {
+	      themeLevel = 'theme-1';
+	    }
+	    $('.theme-ul').append('<li class=' + themeLevel + ' data-desc="' + theme.descr + '" data-id=' + theme.theme_id + '>' + theme.descr + '</li>');
+	  });
+	}
+
+	function addSets(sets) {
+	  $('.set-ul').empty();
+
+	  sets.forEach(function (set) {
+	    $('.set-ul').append('<li data-thumb="' + set.img_big + '">' + set.descr + '</li>');
+	  });
+	}
 
 /***/ }
 /******/ ]);

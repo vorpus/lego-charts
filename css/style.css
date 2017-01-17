@@ -1,0 +1,62 @@
+body {
+  font-family: sans-serif;
+  font-size: 12px;
+  background: lightblue;
+}
+
+.selectors {
+  width: 900px;
+  margin: 20px;
+  background: white;
+}
+
+.themes,
+.sets {
+  width: 200px;
+  float: left;
+}
+
+.set-info {
+  width: 400px;
+  float: left;
+}
+
+.theme-ul,
+.set-ul {
+  list-style: none;
+  height: 600px;
+  overflow: scroll;
+}
+
+.theme-ul li,
+.set-ul li {
+  padding: 5px;
+}
+
+.theme-ul li:hover,
+.set-ul li:hover {
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+.theme-3 {
+  margin-left: 40px;
+}
+
+.theme-2 {
+  margin-left: 20px;
+}
+
+.set-image {
+  height: 300px;
+  width: 400px;
+  /*background: url('http://placecorgi.com/300/300');*/
+
+}
+
+.set-image {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
