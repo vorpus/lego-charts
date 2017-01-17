@@ -55,8 +55,27 @@ body {
 
 }
 
+.set-info {
+  padding: 20px;
+}
+
 .set-image {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+  margin-bottom: 25px;
+}
+
+.set-name {
+  font-size: 26px;
+  font-weight: bold;
+}
+.set-pieces {
+
+}
+.set-id {
+
+}
+.set-year {
+
 }
